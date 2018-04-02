@@ -1,0 +1,41 @@
+<div [formGroup]="form">
+  <label [attr.for]="question.key">{{question.label}}</label>
+  <div [ngSwitch]="question.controlType">
+
+      <mat-form-field  *ngSwitchCase="'textbox'"  >
+        <input matInput placeholder="{{question.label}}" [formControlName]="question.key"
+                 [id]="question.key" [type]="question.type" >
+      </mat-form-field>
+
+
+
+      <mat-form-field  *ngSwitchCase="'number'"  >
+          <input matInput placeholder="{{question.label}}" [formControlName]="question.key"
+                   [id]="question.key" type="number" min="{{question.min}}" max="{{question.max}}" >
+        </mat-form-field>
+
+
+            <mat-form-field  *ngSwitchCase="'date'"  >
+              <input matInput [matDatepicker]="dateid" placeholder="{{question.label}}" 
+                              [id]="question.key" 
+                              [formControlName]="question.key" >
+              <mat-datepicker-toggle matSuffix [for]="dateid"></mat-datepicker-toggle>
+              <mat-datepicker #dateid></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field  *ngSwitchCase="'select'"  >
+                <mat-select placeholder="{{question.label}}" 
+                            [id]="question.key" 
+                            [formControlName]="question.key"  >
+                  <mat-option *ngFor="let optionItem of question.optionSetItems" [value]="optionItem.value">
+                    {{ optionItem.viewValue }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+  </div>
+
+
+  <div style="color:red"*ngIf="isInvalidRequired">   {{question.label}} is required </div>
+  <div style="color:red" *ngIf="isInvalidRange">   {{question.label}} is not assigned to valid range. </div>
+  <div style="color:red" *ngIf="isInvalidPattern">   {{question.label}} is not valid. </div>
+</div>
